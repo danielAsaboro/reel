@@ -1,88 +1,127 @@
-# Reel
+# Reel - Privacy-Preserving Dark Pool DEX
 
-This is a Next.js app containing:
+A multi-layer privacy trading platform on Solana combining **Arcium MPC** encrypted orderbooks, **MagicBlock TEE**-protected sessions, and **Starpay ZK Swap** payments.
 
-- Tailwind CSS setup for styling
-- Useful wallet UI elements setup using [@solana/web3.js](https://www.npmjs.com/package/@solana/web3.js)
-- A basic Greeter Solana program written in Anchor
-- UI components for interacting with the Greeter program
+**Built for Solana Privacy Hack 2026**
 
-## Getting Started
+## Features
+
+- **Encrypted Orderbook** - Orders are encrypted using Arcium MPC. Price and quantity remain hidden until matched.
+- **TEE-Protected Sessions** - Trade in Intel TDX secure enclaves with sub-50ms execution using MagicBlock Private Ephemeral Rollups.
+- **ZK Swap Deposits** - Break the on-chain link between your wallet and trading activity with privacy-preserving deposits via Starpay.
+- **Front-Running Protection** - Hidden orders prevent MEV and front-running attacks.
+- **Compliance-Ready** - Audit trails via Intel TDX attestation for institutional use.
+
+## Architecture
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                     PRIVACY LAYERS                          │
+├─────────────────────────────────────────────────────────────┤
+│  Layer 1: MagicBlock TEE (Private Ephemeral Rollups)       │
+│  - State delegation to Intel TDX secure enclave            │
+│  - Sub-50ms execution latency                              │
+├─────────────────────────────────────────────────────────────┤
+│  Layer 2: Arcium MPC (Encrypted Orderbook)                 │
+│  - Orders encrypted before submission                       │
+│  - Matching in encrypted space                             │
+├─────────────────────────────────────────────────────────────┤
+│  Layer 3: Starpay (ZK Swap Payments)                       │
+│  - Anonymous deposits via ZK proof                          │
+│  - Privacy-preserving withdrawals                          │
+└─────────────────────────────────────────────────────────────┘
+```
+
+## Quick Start
+
+### Prerequisites
+
+- Node.js 18+
+- Rust 1.75+
+- Solana CLI 2.0+
+- Anchor CLI 0.31+
 
 ### Installation
 
-#### Download the template
-
 ```shell
-pnpm create solana-dapp@latest -t gh:solana-foundation/templates/web3js/Reel
-```
-
-#### Install Dependencies
-
-```shell
+# Install dependencies
 pnpm install
-```
 
-## Apps
-
-### anchor
-
-This is a Solana program written in Rust using the Anchor framework.
-
-#### Commands
-
-You can use any normal anchor commands. Either move to the `anchor` directory and run the `anchor` command or prefix the
-command with `pnpm`, eg: `pnpm anchor`.
-
-#### Sync the program id:
-
-Running this command will create a new keypair in the `anchor/target/deploy` directory and save the address to the
-Anchor config file and update the `declare_id!` macro in the `./src/lib.rs` file of the program.
-
-You will manually need to update the constant in `anchor/lib/counter-exports.ts` to match the new program id.
-
-```shell
-pnpm anchor keys sync
-```
-
-#### Build the program:
-
-```shell
+# Build Anchor program
 pnpm anchor-build
-```
 
-#### Start the test validator with the program deployed:
-
-```shell
-pnpm anchor-localnet
-```
-
-#### Run the tests
-
-```shell
-pnpm anchor-test
-```
-
-#### Deploy to Devnet
-
-```shell
-pnpm anchor deploy --provider.cluster devnet
-```
-
-### web
-
-This is a React app that uses the Anchor generated client to interact with the Solana program.
-
-#### Commands
-
-Start the web app
-
-```shell
+# Start development server
 pnpm dev
 ```
 
-Build the web app
+### Running Tests
 
 ```shell
-pnpm build
+# Run Anchor tests
+pnpm anchor-test
 ```
+
+## Sponsor Integrations
+
+### Arcium - Encrypted Compute ($10k Bounty)
+
+MPC circuits for encrypted orderbook operations:
+
+- `init_orderbook` - Initialize encrypted order book
+- `place_encrypted_order` - Place order with hidden price/quantity
+- `match_and_execute_order` - Match in encrypted space
+- `cancel_encrypted_order` - Cancel without revealing details
+
+### MagicBlock - Private Ephemeral Rollups ($5k Bounty)
+
+TEE-protected trading sessions:
+
+- `delegate_trading_session` - Start private session
+- `commit_trading_session` - Checkpoint to base layer
+- `end_trading_session` - Finalize and undelegate
+
+### Starpay - ZK Swap Payments ($3.5k Bounty)
+
+Anonymous fund flows:
+
+- `request_zk_swap_deposit` - Anonymous deposit
+- `request_zk_swap_withdrawal` - Private withdrawal
+- Card issuance for fiat spending (future)
+
+## Project Structure
+
+```
+Reel/
+├── anchor/
+│   ├── programs/hybrid-dex/    # Main Solana program
+│   │   ├── delegation.rs       # MagicBlock TEE integration
+│   │   ├── starpay.rs          # Starpay ZK Swap integration
+│   │   └── lib.rs              # Core trading logic + Arcium
+│   └── encrypted-ixs/          # Arcium MPC circuits
+├── src/
+│   ├── components/
+│   │   ├── magicblock/         # TEE session components
+│   │   ├── starpay/            # Payment components
+│   │   └── trading/            # Trading UI components
+│   └── app/trade/              # Main trading page
+└── bounty.md                   # Full bounty submission
+```
+
+## Commands
+
+| Command                                        | Description              |
+| ---------------------------------------------- | ------------------------ |
+| `pnpm dev`                                     | Start development server |
+| `pnpm build`                                   | Build for production     |
+| `pnpm anchor-build`                            | Build Anchor program     |
+| `pnpm anchor-test`                             | Run Anchor tests         |
+| `pnpm anchor deploy --provider.cluster devnet` | Deploy to devnet         |
+
+## License
+
+MIT
+
+---
+
+_Privacy is necessary for an open society._
+# reel
